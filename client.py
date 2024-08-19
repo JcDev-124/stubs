@@ -3,22 +3,20 @@ import json
 
 def clienteStub(endereco, porta, argumentos):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.connect((endereco, porta))  # Conexão
+        s.connect((endereco, porta))
 
-        mensagem = json.dumps(argumentos)  # Processo de serialização
-        s.sendall(mensagem.encode())  # Envio e processo de codificação
+        mensagem = json.dumps(argumentos)
+        s.sendall(mensagem.encode())
 
-        # Situação bloqueante até reply do servidor
-        mensagemResposta = s.recv(1024)  # Recebe informações do servidor
+        mensagemResposta = s.recv(1024)
 
-        if not mensagemResposta: #adição deste protocolo para garantir que a mensagem do servidor exista
+        if not mensagemResposta:
             raise ValueError("Resposta vazia recebida do servidor")
 
-        resultado = json.loads(mensagemResposta.decode())  # Processo de decodificação e desserialização
+        resultado = json.loads(mensagemResposta.decode())
         return resultado
 
-# stub cliente finalizado
-#procedimentoRemoto = clienteStub('localhost', 65000, {"op": "adicionar", "tarefa": "Almoçar"})
-procedimentoRemoto = clienteStub('localhost', 65000, {"op": "listar"})
-
-print("Resultado do procedimento remoto 1: ", procedimentoRemoto)
+# Exemplo de uso com autenticação
+argumentos = {"usuario": "user1", "senha": "password123", "op": "listar"}
+resultado = clienteStub('localhost', 65000, argumentos)
+print("Resultado do procedimento remoto: ", resultado)
