@@ -4,6 +4,9 @@ from collections import defaultdict
 import hashlib
 import time
 
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
+
 # "Banco de dados" simulado
 tarefas = []
 usuarios = {
@@ -13,9 +16,6 @@ bloqueado = defaultdict(lambda: {"status": False, "timestamp": 0})  # Status de 
 MAX_TENTATIVAS = 3  # Máximo de tentativas antes do bloqueio
 TEMPO_BLOQUEIO = 60  # Tempo em segundos para desbloqueio automático
 
-
-def hash_password(password):
-    return hashlib.sha256(password.encode()).hexdigest()
 
 
 def addTarefa(tarefa):
